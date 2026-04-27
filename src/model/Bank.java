@@ -64,12 +64,24 @@ public class Bank {
     public void addClient(Client client) {
         clients.add(client);
         System.out.println("Cliente agregado: " + client.getName() + " " + client.getLastName());
+        System.out.println("Nombre: " + client.getName() + " " + client.getLastName());
+        System.out.println("ID: " + client.getId());
+        System.out.println("User ID: " + client.getUserId());
+        System.out.println("Cuenta: " + client.getAccount().getAccountNumber());
+        System.out.println("Saldo: " + client.getAccount().getBalance());
     }
 
     // -- Employee gestions --
     public void addEmployed(Employed employed) {
         employeds.add(employed);
         System.out.println("Empleado agregado: " + employed.getName() + " " + employed.getLastName());
+        System.out.println("Nombre: " + employed.getName() + " " + employed.getLastName());
+        System.out.println("ID: " + employed.getId());
+        System.out.println("User ID: " + employed.getUserId());
+        System.out.println("Cuenta: " + employed.getAccount().getAccountNumber());
+        System.out.println("Saldo: " + employed.getAccount().getBalance());
+        System.out.println("Puesto: " + employed.getPosition());
+        System.out.println("Años de experiencia: " + employed.getYearsOfExperience());
     }
 
     // -- Investment gestions --

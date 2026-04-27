@@ -1,45 +1,21 @@
 package model;
 
-public class Account {
-    // Attributes
-    private String accountNumber;
-    private double balance;
+public abstract class Account {
+    protected String accountNumber;
+    protected double balance;
+    protected boolean pendingFirstDeposit;
 
-    // Constructor
-    public Account(String accountNumber, double balance) {
+    public Account(String accountNumber, double initialBalance) {
         this.accountNumber = accountNumber;
-        this.balance = balance;
+        this.balance = initialBalance;
+        // If the initial balance is 0, we consider that the first deposit is pending
+        this.pendingFirstDeposit = (initialBalance == 0);
     }
+
+    public abstract boolean deposit(double amount);
+    public abstract boolean retire(double amount);
 
     // Getters and Setters
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    // Methods to retire and deposit money
-    public boolean retire(double amount) {
-        if (amount <= balance) {
-            balance -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-        }
-    }
+    public double getBalance() { return balance; }
+    public String getAccountNumber() { return accountNumber; }
 }

@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 import model.Account;
+import model.SavingAccount;
+import model.InvestmentAccount;
 import model.Bank;
 import model.Client;
 import model.Employed;
@@ -11,76 +13,84 @@ import model.Investor;
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner sn = new Scanner(System.in);
-        Bank myBank = new Bank("My Bank", "123 Main St", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        // Inicialite the bank with empty lists for clients, employees, and investments
+        Bank myBank = new Bank("My Bank", "Calle 34 #5-45", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         boolean exit = false;
         int option;
 
         while (!exit) {
-            System.out.println("\n==== Welcome to " + myBank.getName() + " ====");
-            System.out.println("1. Registrar empleado");
-            System.out.println("2. Registrar cliente");
-            System.out.println("3. Registrar inversionista y Oferta de inversion");
-            System.out.println("4. Realizar Deposito");
-            System.out.println("5. Realizar Retiro");
-            System.out.println("6. Ver catalogo de inversiones");
-            System.out.println("7. Consultar dias de vacaciones");
-            System.out.println("8. Salir");
-            System.out.print("Seleccione una opcion: ");
+            System.out.println("\n==== BIENVENIDO A " + myBank.getName().toUpperCase() + " ====");
+            System.out.println("1. Registrar Empleado");
+            System.out.println("2. Registrar Cliente");
+            System.out.println("3. Registrar Casa Inversionista y Oferta");
+            System.out.println("4. Realizar Depósito");
+            System.out.println("5. Realizar Retiro (Requiere ID Física)");
+            System.out.println("6. Ver Catálogo de Inversiones");
+            System.out.println("7. Consultar Días de Vacaciones");
+            System.out.println("8. Aplicar Intereses Mensuales (Solo Ahorro)");
+            System.out.println("9. Salir");
+            System.out.print("Seleccione una opción: ");
 
             option = sn.nextInt();
-            sn.nextLine(); // Consume newline
+            sn.nextLine(); // Clear buffer
 
             switch (option) {
                 case 1:
-                    // Handle option 1: Register employee
-                    System.out.println("Registrar empleado");
-                    System.out.print("Ingrese el nombre del empleado: ");
-                    String empName = sn.nextLine();
-                    System.out.print("Ingrese el apellido del empleado: ");
-                    String empLastName = sn.nextLine();
-                    System.out.print("Ingrese el ID del empleado: ");
-                    String empId = sn.nextLine();
-                    System.out.print("Ingrese el userId del empleado: ");
-                    String empUserId = sn.nextLine();
-                    System.out.print("Ingrese el puesto del empleado: ");
-                    String empPosition = sn.nextLine();
-                    System.out.print("Ingrese los años de experiencia del empleado: ");
-                    int empYearsExp = sn.nextInt();
-                        sn.nextLine();
-
-                    // Create and add the employee to the bank
-                    Employed newEmployee = new Employed(empName, empLastName, empId, empUserId, "N/A", empPosition,
-                            empYearsExp);
-                    myBank.addEmployed(newEmployee);
+                    System.out.println("\n--- Registro de Empleado ---");
+                    System.out.print("Nombre: "); String empName = sn.nextLine();
+                    System.out.print("Apellido: "); String empLastName = sn.nextLine();
+                    System.out.print("ID: "); String empId = sn.nextLine();
+                    System.out.print("ID Usuario: "); String empUser = sn.nextLine();
+                    System.out.print("Número de cuenta nómina: "); String empAcc = sn.nextLine();
+                    System.out.print("Puesto (Cajero/Supervisor/Recepcionista): "); String pos = sn.nextLine();
+                    System.out.print("Años trabajando: "); int yrs = sn.nextInt();
+                    
+                    Employed newEmp = new Employed(empName, empLastName, empId, empUser, empAcc, pos, yrs);
+                    myBank.addEmployed(newEmp);
+                    System.out.println("Empleado registrado y cuenta de nómina activada.");
                     break;
 
                 case 2:
-                    // Handle option 2: Register client
-                    System.out.println("Registrar cliente");
-                    System.out.print("Ingrese el nombre del cliente: ");
-                    String clientName = sn.nextLine();
-                    System.out.print("Ingrese el apellido del cliente: ");
-                    String clientLastName = sn.nextLine();
-                    System.out.print("Ingrese el ID del cliente: ");
-                    String clientId = sn.nextLine();
-                    System.out.print("Ingrese el userId del cliente: ");
-                    String clientUserId = sn.nextLine();
-                    System.out.print("Ingrese el numero de cuenta del cliente: ");
-                    String clientAccountNumber = sn.nextLine();
-                    System.out.print("Saldo inicial del cliente: ");
-                    double clientInitialBalance = sn.nextDouble();
-                    sn.nextLine();
+                    System.out.println("\n--- Registro de Cliente ---");
+                    System.out.print("Nombre: "); String cliName = sn.nextLine();
+                    System.out.print("Apellido: "); String cliLastName = sn.nextLine();
+                    System.out.print("ID: "); String cliId = sn.nextLine();
+                    System.out.print("ID Usuario: "); String cliUser = sn.nextLine();
+                    System.out.print("Número de cuenta: "); String cliAccNum = sn.nextLine();
+                    
+                    System.out.println("Tipo de cuenta: 1. Ahorro ($1,000 min) | 2. Inversión ($25,000 min)");
+                    int type = sn.nextInt();
+                    Account newAcc = null;
 
-                    // Create and add the client to the bank
-                    Account clientAccount = new Account(clientAccountNumber, clientInitialBalance);
-                    Client newClient = new Client(clientName, clientLastName, clientId, clientUserId, clientAccount);
-                    myBank.addClient(newClient);
-                    System.out.println("Cuenta creada con saldo inicial: " + clientInitialBalance);
+                    if (type == 1) {
+                        System.out.print("Porcentaje ahorro anual: "); double p = sn.nextDouble();
+                        newAcc = new SavingAccount(cliAccNum, p);
+                        System.out.println("Ingrese el saldo inicial: " + "\n=== Recuerde que el saldo inicial minimo es 1000 ===\n");
+                        double initialDeposit = sn.nextDouble();
+                        if (initialDeposit < 1000) {
+                            System.out.println("Error: Monto insuficiente para cuenta de ahorro.");
+                            break;
+                        }
+                        if (!newAcc.deposit(initialDeposit)) {
+                            System.out.println("Error: No se pudo crear la cuenta de ahorro.");
+                            break;
+                        }
+                    } else {
+                        System.out.print("Monto inicial de inversión: "); double initial = sn.nextDouble();
+                        if (initial < 25000) {
+                            System.out.println("Error: Monto insuficiente para cuenta de inversión.");
+                            break;
+                        }
+                        newAcc = new InvestmentAccount(cliAccNum, initial);
+                    }
+                    
+                    Client newCli = new Client(cliName, cliLastName, cliId, cliUser, newAcc);
+                    myBank.addClient(newCli);
                     break;
 
                 case 3:
-                    System.out.println("Registrar inversionista y oferta de inversion");
-                    System.out.print("Ingrese el ID del inversionista: 5");
+                    System.out.println("\n--- Registro de Inversionista y Oferta ---");
+                    System.out.print("Ingrese el ID del inversionista: ");
                     String investorId = sn.nextLine();
                     System.out.print("Ingrese el nombre del inversionista: ");
                     String investorName = sn.nextLine();
@@ -104,43 +114,27 @@ public class App {
                     break;
 
                 case 4:
-                    System.out.println("Realizar deposito");
-                    System.out.print("Ingrese su userId: ");
-                    String depUserId = sn.nextLine();
-                    Client clientDep = myBank.findClientByUserId(depUserId);
-
-                    if (clientDep == null) {
-                        System.out.println("Cliente no encontrado");
-                        break;
-                    }
-
-                    System.out.print("Ingrese su numero de cuenta: ");
-                    String depAccountNumber = sn.nextLine();
-                    System.out.print("Ingrese monto a depositar: ");
-                    double depAmount = sn.nextDouble();
-                    sn.nextLine();
-
-                    clientDep.depositMoney(depAccountNumber, depUserId, depAmount);
+                    System.out.print("Ingrese su ID de usuario: ");
+                    String dUser = sn.nextLine();
+                    Client cDep = myBank.findClientByUserId(dUser);
+                    if (cDep != null) {
+                        System.out.print("Confirme su número de cuenta: "); String dAcc = sn.nextLine();
+                        System.out.print("Monto a depositar: "); double dAmount = sn.nextDouble();
+                        cDep.depositMoney(dAcc, dUser, dAmount);
+                    } else { System.out.println("Usuario no encontrado."); }
                     break;
 
                 case 5:
-                    System.out.println("Realizar retiro");
-                    System.out.print("Ingrese su userId: ");
-                    String retUserId = sn.nextLine();
-                    Client clientRet = myBank.findClientByUserId(retUserId);
-
-                    if (clientRet == null) {
-                        System.out.println("Cliente no encontrado");
-                        break;
-                    }
-
-                    System.out.print("Ingrese su numero de cuenta: ");
-                    String retAccountNumber = sn.nextLine();
-                    System.out.print("Ingrese monto a retirar: ");
-                    double retAmount = sn.nextDouble();
-                    sn.nextLine();
-
-                    clientRet.retireMoney(retAccountNumber, retUserId, retAmount);
+                    System.out.print("Ingrese su ID de usuario: ");
+                    String rUser = sn.nextLine();
+                    Client cRet = myBank.findClientByUserId(rUser);
+                    if (cRet != null) {
+                        System.out.print("Muestre su ID Física: "); String physicalId = sn.nextLine();
+                        System.out.print("Confirme su número de cuenta: "); String rAcc = sn.nextLine();
+                        System.out.print("Monto a retirar: "); double rAmount = sn.nextDouble();
+                        // Llamamos al método que ajustamos en la clase Client
+                        cRet.retireMoney(rAcc, rUser, physicalId, rAmount);
+                    } else { System.out.println("Usuario no encontrado."); }
                     break;
 
                 case 6:
@@ -149,38 +143,36 @@ public class App {
                     break;
 
                 case 7:
-                    System.out.println("Consultar dias de vacaciones");
-                    System.out.print("Ingrese userId del empleado: ");
-                    String employedUserId = sn.nextLine();
-
-                    Employed foundEmployed = null;
-                    for (Employed employed : myBank.getEmployeds()) {
-                        if (employed.getUserId().equals(employedUserId)) {
-                            foundEmployed = employed;
-                            break;
-                        }
+                    System.out.print("Ingrese ID de usuario del empleado: ");
+                    String eUser = sn.nextLine();
+                    Employed fEmp = null;
+                    for (Employed e : myBank.getEmployeds()) {
+                        if (e.getUserId().equals(eUser)) { fEmp = e; break; }
                     }
-
-                    if (foundEmployed == null) {
-                        System.out.println("Empleado no encontrado");
-                    } else {
-                        System.out.println("Dias de vacaciones de " + foundEmployed.getName() + ": "
-                                + foundEmployed.daysOfVacation());
-                    }
+                    if (fEmp != null) {
+                        System.out.println("Días de vacaciones para " + fEmp.getName() + ": " + fEmp.daysOfVacation());
+                    } else { System.out.println("Empleado no encontrado."); }
                     break;
 
                 case 8:
+                    System.out.println("Aplicando intereses mensuales a cuentas de ahorro...");
+                    for (Client c : myBank.getClients()) {
+                        if (c.getAccount() instanceof SavingAccount) {
+                            ((SavingAccount) c.getAccount()).applyMonthlyInterest();
+                        }
+                    }
+                    System.out.println("Intereses aplicados con éxito.");
+                    break;
+
+                case 9:
                     exit = true;
-                    System.out.println("Gracias por usar el sistema bancario");
+                    System.out.println("Cerrando sesión...");
                     break;
 
                 default:
-                    System.out.println("Opcion invalida");
-                    break;
+                    System.out.println("Opción no válida.");
             }
-
         }
-
         sn.close();
     }
 }

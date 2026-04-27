@@ -26,14 +26,14 @@ public class InvestmentAccount extends Account {
 
     @Override
     public boolean retire(double amount) {
-        // Opción especial: Retirar todo (cancelar cuenta)
+        // Total withdrawal: Allow if the amount is exactly the current balance (closing the account)
         if (amount == this.balance) {
             this.balance = 0;
             System.out.println("Cuenta de inversión cancelada. Saldo retirado por completo.");
             return true;
         }
 
-        // Retiro normal: Validar que queden al menos $10,000
+        // Partial withdrawal: Allow only if the remaining balance will be >= MIN_STAY_BALANCE
         if (this.balance - amount >= MIN_STAY_BALANCE) {
             this.balance -= amount;
             return true;

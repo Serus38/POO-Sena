@@ -13,9 +13,15 @@ public abstract class Account {
     }
 
     public abstract boolean deposit(double amount);
+
     public abstract boolean retire(double amount);
 
     // Getters and Setters
-    public double getBalance() { return balance; }
-    public String getAccountNumber() { return accountNumber; }
+    public double getBalance() {
+        return balance;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
 }

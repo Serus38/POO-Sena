@@ -6,7 +6,7 @@ public class SavingAccount extends Account {
     private static final double REQUIRED_FIRST_DEPOSIT = 1000.0;
 
     public SavingAccount(String accountNumber, double interestRate) {
-        super(accountNumber, 0.0); // Inicia en 0 para obligar al primer depósito
+        super(accountNumber, 0.0); // Iniciate with 0 balance, first deposit is pending
         this.annualInterestPercentage = interestRate;
     }
 
@@ -21,7 +21,7 @@ public class SavingAccount extends Account {
             System.out.println("Error: El primer depósito debe ser exactamente " + REQUIRED_FIRST_DEPOSIT);
             return false;
         }
-        
+
         if (amount > 0) {
             this.balance += amount;
             return true;
@@ -39,9 +39,11 @@ public class SavingAccount extends Account {
         return false;
     }
 
-    // Method to apply monthly interest to the balance
-    public void applyMonthlyInterest() {
+    // Method to apply monthly interest
+    public double applyMonthlyInterest() {
         double monthlyRate = (annualInterestPercentage / 12) / 100;
-        this.balance += (this.balance * monthlyRate);
+        double interestApplied = this.balance * monthlyRate;
+        this.balance += interestApplied;
+        return interestApplied;
     }
 }

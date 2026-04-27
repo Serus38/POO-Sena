@@ -7,12 +7,20 @@ public class Investor {
     private double investmentTrust;
     private double returnRate;
 
+    // Constant for minimum trust level required to invest
+    public static final double MINIMUM_TRUST_REQUIRED = 65.0;
+
     // Constructor
     public Investor(String investorId, String name, double investmentTrust, double returnRate) {
         this.investorId = investorId;
         this.name = name;
         this.investmentTrust = investmentTrust;
         this.returnRate = returnRate;
+    }
+
+    // Method to check if the investor is eligible to invest based on their trust level
+    public static boolean checkEligibility(double trustLevel) {
+        return trustLevel >= MINIMUM_TRUST_REQUIRED;
     }
 
     // Getters and Setters

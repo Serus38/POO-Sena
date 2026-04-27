@@ -10,34 +10,23 @@ public class Client extends Person {
         this.account = account;
     }
 
-    // --- MÉTODOS DE OPERACIÓN ---
-
-    /**
-     * Ajustado: Ahora pide la identificación física como dice el enunciado.
-     */
+    // Validate user credentials and perform a withdrawal
     public void retireMoney(String accountNumber, String userId, String physicalId, double amount) {
-        // 1. Validar usuario y cuenta
         if (!this.userId.equals(userId) || !this.account.getAccountNumber().equals(accountNumber)) {
             System.out.println("Error: Credenciales de usuario o cuenta inválidas.");
             return;
         }
-
-        // 2. REGLA DEL ENUNCIADO: Validar identificación física
-        // Comparamos la identificación que traen por parámetro con la heredada de Person (super.getId())
+        // Validate that the physical ID matches the client's ID
         if (!this.getId().equals(physicalId)) {
             System.out.println("Error: La identificación física no coincide con el titular de la cuenta.");
             return;
         }
 
-        // 3. Intentar realizar el retiro
-        // Eliminamos el "amount <= 1000" porque el cliente puede retirar lo que quiera 
-        // siempre que la cuenta (Savings o Investment) permita dejar el mínimo.
         boolean transSuccess = this.account.retire(amount);
-        
+
         if (transSuccess) {
             System.out.println("Retiro exitoso de $" + amount + ". Saldo actual: $" + this.account.getBalance());
         }
-        // No hace falta un 'else' aquí porque Account.retire() ya imprime sus propios errores de saldo mínimo.
     }
 
     public void retireMoney(String accountNumber, String userId, double amount) {
@@ -49,10 +38,8 @@ public class Client extends Person {
             System.out.println("Error: Usuario o cuenta incorrectos.");
             return;
         }
-
-        // Delegamos la validación del monto (como los $1,000 iniciales) a la cuenta
         boolean success = this.account.deposit(amount);
-        
+
         if (success) {
             System.out.println("Depósito exitoso. Saldo actual: $" + this.account.getBalance());
         }
@@ -75,6 +62,4 @@ public class Client extends Person {
         this.account = account;
     }
 
-  
-    
 }

@@ -6,23 +6,13 @@ public class Employed extends Client {
 
     // Constructor
     public Employed(String name, String lastName, String id, String userId, String accountNumber, String position,
-                    int yearsOfExperience) {
-        // ERROR FIX: Como Account es abstracta, debemos pasarle una implementación.
-        // Lo más lógico es que un empleado tenga una Cuenta de Ahorros para su nómina.
-        // Usamos 0.0 de interés inicial o el que definas por defecto.
+            int yearsOfExperience) {
         super(name, lastName, id, userId, new SavingAccount(accountNumber, 0.0));
-        
+
         this.position = position;
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    // Getters y Setters se mantienen igual...
-
-    /**
-     * Tu lógica es excelente aquí. 
-     * Año 1 = 5 días.
-     * Año 2 = 7 días... hasta tope de 20.
-     */
     public int daysOfVacation() {
         if (yearsOfExperience < 1)
             return 0;
@@ -30,6 +20,7 @@ public class Employed extends Client {
         return Math.min(days, 20);
     }
 
+    // Getters and Setters
     public String getPosition() {
         return position;
     }
@@ -46,5 +37,4 @@ public class Employed extends Client {
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    
 }

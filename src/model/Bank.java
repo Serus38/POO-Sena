@@ -11,7 +11,8 @@ public class Bank {
     private List<Investment> investments;
 
     // Constructor
-    public Bank(String name, String address, List<Client> clients, List<Employed> employeds, List<Investment> investments) {
+    public Bank(String name, String address, List<Client> clients, List<Employed> employeds,
+            List<Investment> investments) {
         this.name = name;
         this.address = address;
         this.clients = clients;
@@ -90,7 +91,8 @@ public class Bank {
             investments.add(investment);
             System.out.println("Inversion segura agregada para el inversor: " + investment.getInvestor().getName());
         } else {
-            System.out.println("Inversion no segura, no se agrego para el inversor: " + investment.getInvestor().getName());
+            System.out.println(
+                    "Inversion no segura, no se agrego para el inversor: " + investment.getInvestor().getName());
         }
     }
 
@@ -102,7 +104,7 @@ public class Bank {
         }
     }
 
-    //-- Bank operations --
+    // -- Bank operations --
     public Client findClientByUserId(String userId) {
         for (Client client : clients) {
             if (client.getUserId().equals(userId)) {
@@ -111,8 +113,5 @@ public class Bank {
         }
         return null; // Return null if no client is found with the given userId
     }
-    
 
-
-    
 }
